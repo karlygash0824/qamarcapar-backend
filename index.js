@@ -1,3 +1,5 @@
+
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -57,7 +59,6 @@ app.post("/api/register", async (req, res) => {
       .json({ success: false, message: "Барлық өрістерді толтырыңыз!" });
   }
 
-  // Telegram хабарламасы
   const text = `
 🕋 Умра пакеті бойынша жаңа тіркелу:
 👤 Аты: ${name}
@@ -68,22 +69,16 @@ app.post("/api/register", async (req, res) => {
   const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
   try {
-    // 1️⃣ Telegram-ға хабар жіберу
     await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: CHAT_ID, text }),
     });
 
-    //  PostgreSQL-ге сақтау
-
-
-await pool.query(
-  'INSERT INTO public.umra_requests (name, phone, "package", created_at) VALUES ($1, $2, $3, NOW())',
-  [name, phone, selectedPackage]
-);
-
-
+    await pool.query(
+      'INSERT INTO public.umra_requests (name, phone, "package", created_at) VALUES ($1, $2, $3, NOW())',
+      [name, phone, selectedPackage]
+    );
 
     res.json({ success: true, message: "Тіркелу сәтті аяқталды ✅" });
   } catch (error) {
@@ -101,11 +96,10 @@ pool.query("SELECT NOW()", (err, result) => {
   }
 });
 
-
-
-// Серверді іске қосу
+// 🌐 Серверді іске қосу
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`Backend сервер ${PORT}-портта жұмыс істеп тұр ✅`)
-);
+app.get("/", (req, res) => {
+  res.send("Server is running...");
+});
 
+app.listen(PORT, () => console.log(`✅ Server is running on port ${PORT}`));
