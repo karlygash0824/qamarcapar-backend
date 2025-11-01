@@ -100,8 +100,8 @@ app.post("/api/register", async (req, res) => {
       [name, phone, selectedPackage]
     );
 
-    // ✅ Түзетілген жер:
-    res.status(200).json({ success: true, message: "Тіркелу сәтті аяқталды ✅" });
+    return res.status(200).json({ success:true, message: "Тіркеу сәтты өтті"})
+
   } catch (error) {
     console.error("❌ Register қатесі:", error);
     res.status(500).json({ success: false, error: "Сервер қатесі ❌" });
