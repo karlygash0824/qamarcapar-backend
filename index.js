@@ -32,6 +32,9 @@ app.use(express.json());
 // PostgreSQL баптау
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+     rejectUnauthorized: false,
+  }
 });
 
 // Telegram token мен chat id
